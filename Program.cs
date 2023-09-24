@@ -4,7 +4,7 @@ using System;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Hosting;
 using Exam.Models.Tab1_Models;
-
+using Exam.Models.Tab2_Models;
 
 class Program
 {
@@ -33,7 +33,13 @@ class Program
               // Create a new container
               string containerId = "ProgramDetails"; 
               string partitionKeyPath = "/programTitle"; 
-              ContainerResponse containerResponse = await databaseResponse.Database.CreateContainerIfNotExistsAsync(containerId, partitionKeyPath);              
+              ContainerResponse containerResponse = await databaseResponse.Database.CreateContainerIfNotExistsAsync(containerId, partitionKeyPath);
+
+            // Create a new container
+            string appFormContainerId = "ApplicationForm";
+            string appFormPartitionKeyPath = "/Id";
+            ContainerResponse appFormContainerResponse = await databaseResponse.Database.CreateContainerIfNotExistsAsync(containerId, partitionKeyPath);
+
           }
           
         await host.RunAsync();
@@ -50,5 +56,11 @@ class Program
                 services.AddSingleton<CosmosClient>();
                 services.AddSingleton<ProgramDetailsRepository>();
                 services.AddSingleton(sp => new CosmosClient("https://localhost:8081", "C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw=="));
+                services.AddSingleton<AdditionalInformationRepository>();
+                services.AddSingleton<ApplicationFormRepository>();
+                services.AddSingleton<PersonalInformationRepository>();
+                services.AddSingleton<ProfileRepository>();
+                services.AddSingleton<QuestionsRepository>();
+                services.AddSingleton<AdditionalQuestionsRepository>();
             });
 }
